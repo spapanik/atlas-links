@@ -1,0 +1,70 @@
+body {
+  width: 390px;
+  min-height: 520px;
+  background: var(--color-surface);
+}
+main {
+  padding: 1.15rem;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+small {
+  display: block;
+  color: var(--color-muted-subtle);
+  font-size: 0.68rem;
+  margin-top: 0.12rem;
+}
+.library-link {
+  background: transparent;
+  color: var(--color-link);
+  padding: 0.4rem;
+  font-size: 0.78rem;
+}
+.library-link:hover {
+  background: var(--color-secondary);
+}
+h1 {
+  font-family: Georgia, serif;
+  font-size: 1.55rem;
+}
+.notice {
+  background: var(--color-warning-bg);
+  color: var(--color-warning-text);
+  border-radius: 9px;
+  padding: 0.7rem;
+  font-size: 0.82rem;
+}
+.loading,
+.unsupported {
+  color: var(--color-muted);
+}
+.loading {
+  padding: 3rem 0;
+  text-align: center;
+}
+.unsupported {
+  padding: 3rem 0.5rem;
+  text-align: center;
+}
+.unsupported h1 {
+  color: var(--color-heading);
+}
+.success {
+  text-align: center;
+  padding: 5rem 1rem;
+}
+.success > span {
+  display: grid;
+  place-items: center;
+  margin: 0 auto 1rem;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+  font-size: 1.5rem;
+}

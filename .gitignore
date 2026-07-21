@@ -1,0 +1,16 @@
+coverage/
+node_modules/
+.pnpm-store/
+dist/
+*.zip
+*.crx
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.gpg
+/atlas-links.json
+*.tsbuildinfo

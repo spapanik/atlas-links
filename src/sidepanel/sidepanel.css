@@ -1,0 +1,76 @@
+body {
+  min-width: 260px;
+}
+.side-panel .search-topbar {
+  min-height: 54px;
+  padding: 0.55rem 0.75rem;
+}
+.side-panel .brand strong {
+  font-size: 0.88rem;
+}
+.side-panel .search-topbar button {
+  padding: 0.42rem 0.5rem;
+  font-size: 0.72rem;
+}
+.side-panel .search-page {
+  width: 100%;
+  padding: 1rem 0.75rem 2rem;
+}
+.side-panel .search-intro {
+  margin-bottom: 0.7rem;
+}
+.side-panel .search-intro .eyebrow {
+  display: none;
+}
+.side-panel .search-intro h1 {
+  margin-bottom: 0.7rem;
+  font-size: 1.25rem;
+}
+.side-panel .search-field input {
+  height: 44px;
+  font-size: 0.9rem;
+}
+.side-panel .tag-picker {
+  display: block;
+  margin: 0.7rem 0 0.9rem;
+}
+.side-panel .tag-picker > span {
+  display: block;
+  padding: 0 0 0.4rem;
+}
+.side-panel .search-summary {
+  margin-top: 0.9rem;
+}
+.side-panel .search-results li {
+  min-height: 0;
+  gap: 0.65rem;
+  padding: 0.85rem 0.45rem;
+}
+.side-panel .result-title {
+  font-size: 0.95rem;
+}
+.side-panel .result-copy > p {
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  -webkit-line-clamp: 2;
+}
+.side-panel .result-tags {
+  margin-top: 0.5rem;
+}
+.side-panel .new-tab-link {
+  padding: 0.34rem 0.4rem;
+  font-size: 0.68rem;
+}
+@media (max-width: 320px) {
+  .side-panel .search-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .side-panel .search-topbar button {
+    align-self: stretch;
+  }
+  .side-panel .search-results li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}

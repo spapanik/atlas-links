@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Atlas Links is a local-first Chrome extension for capturing, organising, searching, and optionally syncing bookmarks through your private Google Drive."
+    />
+    <title>Atlas Links</title>
+    <link rel="icon" href="assets/atlas-links.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="page-shell">
+        <a class="brand" href="./" aria-label="Atlas Links home">
+          <img class="brand-logo" src="assets/atlas-links.svg" alt="" />
+          <span>Atlas Links</span>
+        </a>
+        <h1>Atlas Links: a bookmark manager for Chrome.</h1>
+        <p class="subtitle">
+          Save and organise web bookmarks with tags and descriptions, find them with fuzzy search,
+          and optionally sync them through your own Google Drive. Atlas Links works locally without
+          an account.
+        </p>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section aria-labelledby="what-it-does">
+        <h2 id="what-it-does">What Atlas Links does</h2>
+        <p>
+          Atlas Links is a local-first Chrome extension for capturing, organising, and searching
+          bookmarks. It adds fast capture, fuzzy search over bookmark names and descriptions, tags,
+          and a clean library. All bookmarks are stored locally on your device by default — no
+          account required.
+        </p>
+        <div class="features">
+          <div class="feature">
+            <h3>Capture</h3>
+            <p>
+              Save the current page with a keyboard shortcut. The title and URL are pre-filled so
+              you can add tags and notes in seconds.
+            </p>
+          </div>
+          <div class="feature">
+            <h3>Organise</h3>
+            <p>
+              Add tags and descriptions to your bookmarks. Browse, filter, and manage your library
+              from the side panel or a full page.
+            </p>
+          </div>
+          <div class="feature">
+            <h3>Search</h3>
+            <p>
+              Search bookmark names and descriptions with fuzzy matching, and narrow your library
+              with tag filters.
+            </p>
+          </div>
+          <div class="feature">
+            <h3>Private sync</h3>
+            <p>
+              Optionally sign in with Google to sync your bookmarks to your private Google Drive
+              app-data folder. No third-party servers involved.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="how-it-works">
+        <h2 id="how-it-works">How it works</h2>
+        <p>
+          Atlas Links runs entirely on your device. Bookmarks are saved in Chrome's local extension
+          storage. When you choose to sign in with Google, the extension stores a single
+          bookmark-data file in the hidden
+          <code>appDataFolder</code> of your Google Drive — a private area that other apps cannot
+          access and that does not appear in your regular Drive file list. Atlas Links never sees
+          your Google password and has no developer-operated backend or database.
+        </p>
+        <p>
+          You can import existing bookmarks from your browser, export your library as a JSON file,
+          and use every feature offline. Syncing is optional and can be turned off at any time
+          without losing your local bookmarks.
+        </p>
+      </section>
+
+      <section aria-labelledby="data">
+        <h2 id="data">Your data</h2>
+        <p>
+          Atlas Links does not collect analytics, telemetry, or usage data. No advertising or
+          tracking is included. The only data it processes is the bookmark content you create and
+          the Google Drive scope needed for optional sync. Read the full
+          <a href="privacy/">privacy policy</a> for details.
+        </p>
+      </section>
+    </main>
+
+    <footer class="page-shell">
+      <p>
+        Atlas Links · <a href="privacy/">Privacy policy</a> ·
+        <a href="terms-of-service/">Terms of Service</a>
+      </p>
+    </footer>
+  </body>
+</html>

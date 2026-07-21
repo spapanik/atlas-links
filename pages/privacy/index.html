@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Privacy policy for the Atlas Links Chrome extension." />
+    <title>Privacy Policy — Atlas Links</title>
+    <link rel="icon" href="../assets/atlas-links.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="page-shell">
+        <a class="brand" href="../" aria-label="Atlas Links home">
+          <img class="brand-logo" src="../assets/atlas-links.svg" alt="" />
+          <span>Atlas Links</span>
+        </a>
+        <h1>Privacy policy</h1>
+        <p class="summary">
+          Atlas Links is a local-first bookmark manager. Your bookmarks stay on your device unless
+          you explicitly enable private Google Drive sync.
+        </p>
+        <p class="effective-date">
+          Effective date: <time datetime="2026-07-16">16 July 2026</time>
+        </p>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section aria-labelledby="overview">
+        <h2 id="overview">Overview</h2>
+        <p>
+          This policy explains what the Atlas Links Chrome extension processes, why it processes it,
+          where the data is stored, and the choices available to you. Atlas Links has no
+          developer-operated backend and does not sell personal information, serve advertising, or
+          collect analytics or telemetry.
+        </p>
+      </section>
+
+      <section aria-labelledby="data">
+        <h2 id="data">Data Atlas Links processes</h2>
+        <ul>
+          <li>
+            <strong>Active page details:</strong> when you open Atlas Links to save a page, the
+            extension reads the active tab's title and URL to pre-fill the bookmark form. It does
+            not read your browsing history.
+          </li>
+          <li>
+            <strong>Bookmark data:</strong> URLs, names, descriptions, tags, stable identifiers,
+            created and updated dates, and deletion markers needed to synchronize deletions.
+          </li>
+          <li>
+            <strong>Local application data:</strong> a random device identifier, data schema and
+            revision information, sync state, and extension preferences such as appearance.
+          </li>
+          <li>
+            <strong>Imported and exported data:</strong> bookmark files you choose to import are
+            processed locally. Exports are written to a file you choose to download.
+          </li>
+        </ul>
+        <p>
+          Atlas Links does not collect Google passwords, payment information, health information,
+          precise location, communications, or website content beyond the active page title and URL
+          described above.
+        </p>
+      </section>
+
+      <section aria-labelledby="local-storage">
+        <h2 id="local-storage">Local storage</h2>
+        <p>
+          Bookmark and application data is stored in Chrome's extension-local storage on your
+          device. Local bookmark features work without an account and without sending bookmark data
+          to Atlas Links' developer.
+        </p>
+        <p>
+          Local data remains until you delete it, clear the extension's data, or uninstall the
+          extension. A deleted bookmark is represented by a minimal deletion marker so its deletion
+          can synchronize. Atlas Links does not currently remove those markers automatically; they
+          remain until the relevant extension or Drive application data is cleared.
+        </p>
+      </section>
+
+      <section aria-labelledby="google-sync">
+        <h2 id="google-sync">Optional Google Drive sync</h2>
+        <p>
+          Google sign-in and sync are optional and begin only after an explicit action from you.
+          Atlas Links uses Chrome's identity service for authentication and requests only this
+          Google Drive permission:
+          <code>https://www.googleapis.com/auth/drive.appdata</code>.
+        </p>
+        <p>
+          When sync is enabled, Atlas Links sends a versioned JSON copy of the bookmark store to
+          Google's Drive API over HTTPS. It stores one file, named <code>atlas-links.v1.json</code>,
+          in your private Google Drive application-data folder. The folder is hidden from the normal
+          Drive file list and is intended for data used by Atlas Links, not access to your other
+          Drive files.
+        </p>
+        <p>
+          Access tokens are obtained through Chrome's identity facilities and are used in memory for
+          Google API requests. Atlas Links does not store or log those tokens itself. Signing out
+          clears account-specific sync metadata and attempts to revoke cached authorization, but it
+          keeps your local bookmarks. Signing out or uninstalling does not automatically delete the
+          remote application-data file.
+        </p>
+        <p class="notice">
+          The use of information received from Google APIs will adhere to the
+          <a href="https://developer.chrome.com/docs/webstore/program-policies/user-data-faq"
+            >Chrome Web Store User Data Policy</a
+          >, including the Limited Use requirements.
+        </p>
+      </section>
+
+      <section aria-labelledby="sharing">
+        <h2 id="sharing">Data sharing and third parties</h2>
+        <p>
+          If you enable sync, bookmark data is shared with Google only to provide the backup and
+          synchronization feature you requested. Google processes that data under the
+          <a href="https://policies.google.com/privacy">Google Privacy Policy</a>. Atlas Links does
+          not share bookmark data with advertisers, data brokers, analytics providers, or other
+          third parties.
+        </p>
+        <p>
+          This policy page is hosted by GitHub Pages. Visiting the page may cause GitHub to process
+          ordinary web request information under the
+          <a
+            href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
+            >GitHub Privacy Statement</a
+          >. The extension does not send your bookmarks to this website.
+        </p>
+      </section>
+
+      <section aria-labelledby="permissions">
+        <h2 id="permissions">Chrome permissions</h2>
+        <ul>
+          <li><strong>Storage</strong> saves bookmarks and preferences locally.</li>
+          <li>
+            <strong>Active tab</strong> reads the page title and URL when you use the extension to
+            capture the current page.
+          </li>
+          <li>
+            <strong>Identity</strong> supports optional Google sign-in without asking Atlas Links
+            for your Google password.
+          </li>
+          <li><strong>Alarms</strong> schedules bounded background sync retries.</li>
+          <li><strong>Side panel</strong> opens the bookmark library in Chrome's side panel.</li>
+          <li>
+            <strong>Restricted Google API access</strong> allows requests only to the Google Drive
+            and OAuth services needed for optional sync and sign-out.
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="controls">
+        <h2 id="controls">Your controls</h2>
+        <ul>
+          <li>View, edit, export, or delete bookmarks in Atlas Links.</li>
+          <li>Use all local bookmark features without signing in.</li>
+          <li>Sign out while retaining the local bookmark collection.</li>
+          <li>Revoke Atlas Links' access from your Google Account permissions.</li>
+          <li>Clear local extension data or uninstall Atlas Links to remove its local data.</li>
+          <li>
+            Use Google Drive's application-management controls to remove Atlas Links' hidden Drive
+            application data where available.
+          </li>
+        </ul>
+        <p>
+          There is no developer-held copy to request because Atlas Links has no developer-operated
+          data server.
+        </p>
+      </section>
+
+      <section aria-labelledby="security">
+        <h2 id="security">Security</h2>
+        <p>
+          Atlas Links validates local and remote bookmark documents before using them, communicates
+          with Google services over HTTPS, does not load remote executable code, and avoids logging
+          access tokens or private bookmark content. No storage or transmission method is completely
+          risk-free, so keep Chrome and the extension up to date and protect access to your device
+          and Google Account.
+        </p>
+      </section>
+
+      <section aria-labelledby="changes">
+        <h2 id="changes">Changes to this policy</h2>
+        <p>
+          This policy will be updated if Atlas Links' data practices change. The effective date at
+          the top of the page identifies the current version. Material changes will be reflected
+          here before or when the related extension update is published.
+        </p>
+      </section>
+
+      <section aria-labelledby="contact">
+        <h2 id="contact">Contact</h2>
+        <p>
+          For privacy questions, use a current public contact link on the
+          <a href="https://github.com/spapanik">publisher's GitHub profile</a>. Do not include
+          bookmark content, complete private URLs, access tokens, or other sensitive information in
+          a public message.
+        </p>
+      </section>
+    </main>
+
+    <footer class="page-shell">
+      <p>
+        Atlas Links · <a href="../">Home</a> · <a href="./">Privacy policy</a> ·
+        <a href="../terms-of-service/">Terms of Service</a>
+      </p>
+    </footer>
+  </body>
+</html>

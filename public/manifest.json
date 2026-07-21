@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "Atlas Links",
+  "description": "Save, organize, and privately sync your bookmarks.",
+  "version": "0.1.0",
+  "minimum_chrome_version": "116",
+  "icons": {
+    "16": "icons/atlas-links-16.png",
+    "32": "icons/atlas-links-32.png",
+    "48": "icons/atlas-links-48.png",
+    "128": "icons/atlas-links-128.png"
+  },
+  "permissions": ["storage", "activeTab", "identity", "alarms", "sidePanel"],
+  "host_permissions": ["https://www.googleapis.com/*", "https://oauth2.googleapis.com/*"],
+  "action": {
+    "default_title": "Save to Atlas Links",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/atlas-links-16.png",
+      "32": "icons/atlas-links-32.png",
+      "48": "icons/atlas-links-48.png"
+    }
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      }
+    },
+    "search-newtab": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+K",
+        "mac": "Command+Shift+K"
+      },
+      "description": "Search Atlas Links in a new tab"
+    },
+    "search-sidebar": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L",
+        "mac": "Command+Shift+L"
+      },
+      "description": "Search Atlas Links in the side panel"
+    }
+  },
+  "side_panel": { "default_path": "sidepanel.html" },
+  "options_page": "library.html",
+  "background": { "service_worker": "assets/background.js", "type": "module" },
+  "oauth2": {
+    "client_id": "REPLACE_AT_BUILD_TIME.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/drive.appdata"]
+  },
+  "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'self'" }
+}

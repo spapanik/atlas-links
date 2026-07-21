@@ -1,0 +1,70 @@
+name: Task
+description: A development ticket with the same structure as a TASKS.md entry.
+title: '[Task] '
+labels: ['task']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A task describes a concrete, verifiable change. Write it so someone else could implement it
+        without asking questions: the problem it solves, what is in and out of scope, and how to
+        prove it is done.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: >-
+        What is wrong or missing today, and why it matters. Reference concrete files, behaviors,
+        and failure modes rather than restating the solution.
+      placeholder: >-
+        The build falls back to a placeholder OAuth client ID when `.env.local` is absent, and
+        `pnpm build:zip` happily packages it...
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: >-
+        What the change includes and, just as importantly, what it deliberately excludes.
+        Note any existing behavior that must remain unchanged.
+      placeholder: |
+        - Keep the existing behavior of `pnpm build` unchanged.
+        - Add `pnpm build:zip:prod`, which produces the Chrome Web Store submission zip.
+        - Do not add a Chrome New Tab override; that is a separate product decision.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: >-
+        Observable outcomes that make the task done. Each criterion should be checkable
+        without knowing how the change was implemented.
+      placeholder: |
+        - [ ] `pnpm build:zip:prod` with both env vars set produces a zip whose manifest contains the real OAuth client ID.
+        - [ ] `pnpm build:zip:prod` without `VITE_GOOGLE_OAUTH_CLIENT_ID` exits nonzero and leaves no submission zip behind.
+    validations:
+      required: true
+  - type: textarea
+    id: tests-and-verification
+    attributes:
+      label: Tests and verification
+      description: >-
+        Automated tests to add and checks to run before the development handoff.
+      value: |
+        -
+        - Run `pnpm format`, `pnpm lint`, `pnpm test:coverage`, and `pnpm build`, in that order.
+    validations:
+      required: true
+  - type: textarea
+    id: qa-verification
+    attributes:
+      label: QA verification
+      description: >-
+        Manual browser, account, device, visual, or interaction checks. These are QA's
+        responsibility and do not block the development handoff.
+      placeholder: |
+        - In an unpacked build, sign in, reload the extension in chrome://extensions, and confirm the library still shows the signed-in state.
+    validations:
+      required: false

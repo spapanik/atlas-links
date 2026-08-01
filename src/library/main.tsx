@@ -23,7 +23,7 @@ import { downloadAtlasLinksExport, serializeAtlasLinksExport } from '../import/a
 import '../ui/styles.css';
 import './library.css';
 
-const PRIVACY_POLICY_URL = 'https://spapanik.github.io/atlas-links/privacy/';
+const PRIVACY_POLICY_URL = 'https://atlas-links.kuma.ai/privacy/';
 const SOURCE_CODE_URL = 'https://github.com/spapanik/atlas-links';
 
 function Library() {

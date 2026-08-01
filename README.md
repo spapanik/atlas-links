@@ -71,11 +71,11 @@ Bookmarks remain in `chrome.storage.local` when signed out. Sync stores one vali
 
 Signing out immediately returns Atlas Links to local-only mode, attempts to revoke the Google OAuth grant, and clears Chrome's cached authorization. If Google revocation cannot be confirmed, local bookmarks remain available and the library shows a warning with the manual Google Account fallback.
 
-## Privacy policy
+## Branding
 
-The Atlas Links privacy policy is published at [https://spapanik.github.io/atlas-links/privacy/](https://spapanik.github.io/atlas-links/privacy/). Its canonical source is [`pages/privacy/index.html`](pages/privacy/index.html), and [the Pages workflow](.github/workflows/privacy-policy-pages.yml) publishes the `pages` directory after relevant changes land on `main`.
+The Atlas Links site is published with Cloudflare Pages at [https://atlas-links.kuma.ai/](https://atlas-links.kuma.ai/). Its canonical source is the [`pages`](pages) directory, and [the publishing workflow](.github/workflows/publish-site.yml) deploys that directory after relevant changes land on `main`.
 
-For the first deployment, open the repository's **Settings → Pages**, set **Build and deployment → Source** to **GitHub Actions**, then run the **Publish privacy policy** workflow or push a relevant change to `main`. No custom domain or separate hosting account is required. The `pages` directory is the site root, so additional content can be added there without changing the privacy-policy URL. Because this repository is private, its GitHub account must have a plan that supports Pages for private repositories; otherwise, publish the same directory from a public repository. After deployment, use the same public URL in the Chrome Web Store privacy-policy field and the Google Auth Platform branding configuration.
+The public [Atlas Links privacy policy](https://atlas-links.kuma.ai/privacy/) is served from the same site.
 
 ### Store concurrency
 

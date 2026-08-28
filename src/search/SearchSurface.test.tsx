@@ -68,6 +68,14 @@ describe('SearchSurface', () => {
     expect(markup).toContain('The side panel could not open.');
   });
 
+  it('renders tag filters as a collapsed disclosure', () => {
+    const markup = render();
+    expect(markup).toContain('class="tag-filter-options"');
+    expect(markup).toContain('aria-label="Show all tags"');
+    expect(markup).toContain('aria-expanded="false"');
+    expect(markup).toContain('tag-filter-ellipsis');
+  });
+
   it('renders empty, no-results, and repository-error states', () => {
     expect(render({ bookmarks: [] })).toContain('Your atlas is empty');
     expect(render({ initialQuery: 'missing' })).toContain('No paths found');

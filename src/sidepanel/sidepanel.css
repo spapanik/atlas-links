@@ -34,7 +34,7 @@ body {
   display: block;
   margin: 0.7rem 0 0.9rem;
 }
-.side-panel .tag-picker > span {
+.side-panel .tag-filter-label {
   display: block;
   padding: 0 0 0.4rem;
 }

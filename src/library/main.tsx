@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BookmarkForm } from '../ui/BookmarkForm';
 import { Logo } from '../ui/Logo';
 import { ThemeControl } from '../ui/ThemeControl';
+import { CollapsibleTagFilter } from '../ui/CollapsibleTagFilter';
 import { repository, useBookmarks } from '../ui/useBookmarks';
 import { searchBookmarks, type SortOrder } from '../domain/search';
 import type { Bookmark } from '../domain/model';
@@ -144,25 +145,20 @@ function Library() {
           </select>
         </section>
         {tags.length > 0 && (
-          <section className="filters" aria-label="Filter by tags">
-            <span>Filter:</span>
-            {tags.map((tag) => {
-              const active = selected.includes(tag);
-              return (
-                <button
-                  key={tag}
-                  aria-pressed={active}
-                  className={active ? 'active' : 'secondary'}
-                  onClick={() =>
-                    setSelected(active ? selected.filter((x) => x !== tag) : [...selected, tag])
-                  }
-                >
-                  {tag}
-                  {active ? ' ×' : ''}
-                </button>
-              );
-            })}
-          </section>
+          <CollapsibleTagFilter
+            className="filters"
+            label="Filter:"
+            tags={tags}
+            selectedTags={selected}
+            showRemoveIndicator
+            onToggleTag={(tag) =>
+              setSelected(
+                selected.includes(tag)
+                  ? selected.filter((item) => item !== tag)
+                  : [...selected, tag],
+              )
+            }
+          />
         )}
         <div className="collection-title">
           <h2>

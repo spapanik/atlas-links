@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import type { Bookmark } from '../domain/model';
 import { searchBookmarks } from '../domain/search';
 import { Logo } from '../ui/Logo';
+import { CollapsibleTagFilter } from '../ui/CollapsibleTagFilter';
 import { getSearchKeyboardAction, openResult } from './keyboard';
 
 export function SearchSurface({
@@ -150,24 +151,13 @@ export function SearchSurface({
         )}
 
         {tags.length > 0 && (
-          <section className="tag-picker" aria-label="Filter by tags">
-            <span>Tags</span>
-            <div>
-              {tags.map((tag) => {
-                const active = selectedTags.includes(tag);
-                return (
-                  <button
-                    key={tag}
-                    className={active ? 'active' : 'secondary'}
-                    aria-pressed={active}
-                    onClick={() => toggleTag(tag)}
-                  >
-                    {tag}
-                  </button>
-                );
-              })}
-            </div>
-          </section>
+          <CollapsibleTagFilter
+            className="tag-picker"
+            label="Tags"
+            tags={tags}
+            selectedTags={selectedTags}
+            onToggleTag={toggleTag}
+          />
         )}
 
         <div className="search-summary" aria-live="polite">

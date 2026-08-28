@@ -76,25 +76,7 @@ body {
   background: var(--color-secondary-hover);
 }
 .tag-picker {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
   margin: 0.9rem 0 1.3rem;
-}
-.tag-picker > span {
-  padding-top: 0.36rem;
-  color: var(--color-muted);
-  font-size: 0.76rem;
-  font-weight: 700;
-}
-.tag-picker > div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-.tag-picker button {
-  padding: 0.34rem 0.58rem;
-  font-size: 0.74rem;
 }
 .search-summary {
   min-height: 38px;

@@ -75,15 +75,7 @@
   gap: 0.8rem;
 }
 .filters {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.45rem;
   margin: 1rem 0;
-}
-.filters button {
-  padding: 0.36rem 0.66rem;
-  font-size: 0.76rem;
 }
 .collection-title {
   display: flex;

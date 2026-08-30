@@ -12,6 +12,7 @@ function Popup() {
   const { store, error } = useBookmarks();
   const [activeTab, setActiveTab] = useState<CaptureTab | null>();
   const [saved, setSaved] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     chrome.tabs
@@ -31,6 +32,29 @@ function Popup() {
     ),
   ].sort();
   const existing = capture?.kind === 'existing' ? capture.bookmark : undefined;
+
+  if (deleting) {
+    return (
+      <main>
+        <header>
+          <div className="brand">
+            <Logo />
+            <div>
+              <strong>Atlas Links</strong>
+              <small>Save a place worth returning to.</small>
+            </div>
+          </div>
+        </header>
+        <section className="success">
+          <span>✓</span>
+          <h1>Link removed</h1>
+          <button className="secondary" onClick={() => window.close()}>
+            Done
+          </button>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main>
@@ -74,6 +98,19 @@ function Popup() {
         <>
           <h1>{existing ? 'Update this link' : 'Save this link'}</h1>
           {existing && <p className="notice">This URL is already saved. Saving will update it.</p>}
+          {existing && (
+            <button
+              className="danger delete-link"
+              onClick={() => {
+                if (confirm(`Delete "${existing.name}"?`)) {
+                  void repository.remove(existing.id);
+                  setDeleting(true);
+                }
+              }}
+            >
+              Delete link
+            </button>
+          )}
           <BookmarkForm
             key={existing?.id ?? capture.input.url}
             initial={capture.input}

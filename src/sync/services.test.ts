@@ -75,6 +75,7 @@ function repositoryFor(snapshot: BookmarkStore) {
     remove: vi.fn(),
     importBrowserBookmarks: vi.fn(),
     importAtlasLinks: vi.fn(),
+    overwriteAtlasLinks: vi.fn(),
     subscribe: () => () => undefined,
   } satisfies BookmarkRepository;
 }
@@ -409,6 +410,7 @@ describe('SyncEngine concurrency', () => {
       remove: async () => Promise.reject(new Error('Not used in this test.')),
       importBrowserBookmarks: async () => Promise.reject(new Error('Not used in this test.')),
       importAtlasLinks: async () => Promise.reject(new Error('Not used in this test.')),
+      overwriteAtlasLinks: async () => Promise.reject(new Error('Not used in this test.')),
       subscribe: () => () => undefined,
     } satisfies BookmarkRepository;
     const identity = {
@@ -467,6 +469,7 @@ describe('SyncEngine concurrency', () => {
       remove: async () => Promise.reject(new Error('Not used in this test.')),
       importBrowserBookmarks: async () => Promise.reject(new Error('Not used in this test.')),
       importAtlasLinks: async () => Promise.reject(new Error('Not used in this test.')),
+      overwriteAtlasLinks: async () => Promise.reject(new Error('Not used in this test.')),
       subscribe: () => () => undefined,
     } satisfies BookmarkRepository;
     const identity = {
@@ -511,6 +514,7 @@ describe('SyncEngine concurrency', () => {
       remove: vi.fn(),
       importBrowserBookmarks: vi.fn(),
       importAtlasLinks: vi.fn(),
+      overwriteAtlasLinks: vi.fn(),
       subscribe: () => () => undefined,
     } satisfies BookmarkRepository;
     const identity = {
@@ -548,6 +552,7 @@ describe('SyncEngine concurrency', () => {
       remove: vi.fn(),
       importBrowserBookmarks: vi.fn(),
       importAtlasLinks: vi.fn(),
+      overwriteAtlasLinks: vi.fn(),
       subscribe: () => () => undefined,
     } satisfies BookmarkRepository;
     const identity = { token: vi.fn(), signOut: vi.fn() } satisfies IdentityService;
@@ -580,6 +585,7 @@ describe('SyncEngine concurrency', () => {
       remove: vi.fn(),
       importBrowserBookmarks: vi.fn(),
       importAtlasLinks: vi.fn(),
+      overwriteAtlasLinks: vi.fn(),
       subscribe: () => () => undefined,
     } satisfies BookmarkRepository;
     const identity = {
@@ -632,6 +638,7 @@ describe('SyncEngine concurrency', () => {
       remove: vi.fn(),
       importBrowserBookmarks: vi.fn(),
       importAtlasLinks: vi.fn(),
+      overwriteAtlasLinks: vi.fn(),
       subscribe: () => () => undefined,
     } satisfies BookmarkRepository;
     const identity = {

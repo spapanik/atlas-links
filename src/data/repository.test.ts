@@ -434,4 +434,49 @@ describe('ChromeBookmarkRepository Atlas Links import', () => {
     expect(state.stored.bookmarks.map((bookmark) => bookmark.id)).toEqual(['new']);
     expect(state.stored.revision).toBe(1);
   });
+
+  it('overwrites all existing bookmarks with the imported records', async () => {
+    const store = emptyStore(now, 'device');
+    store.bookmarks = [
+      {
+        id: 'one',
+        url: 'https://one.example',
+        name: 'One',
+        description: '',
+        tags: [],
+        createdAt: now,
+        updatedAt: now,
+      },
+      {
+        id: 'two',
+        url: 'https://two.example',
+        name: 'Two',
+        description: '',
+        tags: [],
+        createdAt: now,
+        updatedAt: now,
+      },
+    ];
+    const state = chromeMock(store);
+    const repository = new ChromeBookmarkRepository();
+    const subscriber = vi.fn();
+    repository.subscribe(subscriber);
+
+    const result = await repository.overwriteAtlasLinks([
+      { id: 'fresh', url: 'https://fresh.example', name: 'Fresh', description: '', tags: [] },
+    ]);
+
+    expect(result.created).toHaveLength(1);
+    expect(result.created[0].id).toBe('fresh');
+    expect(result.updated).toEqual([]);
+    expect(state.stored.bookmarks).toHaveLength(1);
+    expect(state.stored.bookmarks[0].name).toBe('Fresh');
+    expect(state.stored.revision).toBe(1);
+    expect(state.set).toHaveBeenCalledTimes(1);
+    expect(state.set).toHaveBeenCalledWith(
+      expect.objectContaining({ bookmarkStore: expect.any(Object), syncDirty: true }),
+    );
+    expect(subscriber).toHaveBeenCalledTimes(1);
+    expect(state.sendMessage).toHaveBeenCalledWith({ type: 'schedule-sync' });
+  });
 });

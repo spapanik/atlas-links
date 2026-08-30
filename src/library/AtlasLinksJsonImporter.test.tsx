@@ -126,12 +126,14 @@ describe('AtlasLinksJsonImporter', () => {
   it('shows all review categories and cancels without applying changes', async () => {
     const onClose = vi.fn();
     const onImport = vi.fn();
+    const onOverwrite = vi.fn();
     await act(async () => {
       root.render(
         <AtlasLinksJsonImporter
           existingBookmarks={existing}
           onClose={onClose}
           onImport={onImport}
+          onOverwrite={onOverwrite}
         />,
       );
     });
@@ -150,6 +152,7 @@ describe('AtlasLinksJsonImporter', () => {
     await act(async () => button('Cancel').click());
     expect(onClose).toHaveBeenCalledOnce();
     expect(onImport).not.toHaveBeenCalled();
+    expect(onOverwrite).not.toHaveBeenCalled();
   });
 
   it('applies once, prevents double submission, and focuses the completion result', async () => {
@@ -168,6 +171,7 @@ describe('AtlasLinksJsonImporter', () => {
           existingBookmarks={existing}
           onClose={() => undefined}
           onImport={onImport}
+          onOverwrite={async () => ({ created: [], updated: [], unchanged: 0, conflicts: [] })}
         />,
       );
     });
@@ -214,6 +218,7 @@ describe('AtlasLinksJsonImporter', () => {
           existingBookmarks={existing}
           onClose={onClose}
           onImport={async () => ({ created: [], updated: [], unchanged: 0, conflicts: [] })}
+          onOverwrite={async () => ({ created: [], updated: [], unchanged: 0, conflicts: [] })}
         />,
       );
     });
@@ -239,6 +244,7 @@ describe('AtlasLinksJsonImporter', () => {
           existingBookmarks={existing}
           onClose={() => undefined}
           onImport={onImport}
+          onOverwrite={async () => ({ created: [], updated: [], unchanged: 0, conflicts: [] })}
         />,
       );
     });
@@ -248,5 +254,37 @@ describe('AtlasLinksJsonImporter', () => {
     expect(container.querySelector('[role="alert"]')?.textContent).toMatch(/could not be saved/i);
     expect(container.textContent).toContain('Review Atlas Links import');
     expect(button('Apply changes').disabled).toBe(false);
+  });
+
+  it('shows overwrite warning and requires confirmation before replacing all bookmarks', async () => {
+    const onOverwrite = vi.fn();
+    await act(async () => {
+      root.render(
+        <AtlasLinksJsonImporter
+          existingBookmarks={existing}
+          onClose={() => undefined}
+          onImport={async () => ({ created: [], updated: [], unchanged: 0, conflicts: [] })}
+          onOverwrite={onOverwrite}
+        />,
+      );
+    });
+    await chooseFile();
+
+    // Switch to overwrite mode
+    const select = container.querySelector<HTMLSelectElement>('select')!;
+    await act(async () => {
+      Object.defineProperty(select, 'value', { value: 'overwrite', writable: true });
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+
+    expect(container.textContent).toContain('replace all');
+    expect(container.textContent).toContain('permanently removed');
+
+    const replaceButton = button('Replace all');
+    expect(replaceButton.disabled).toBe(true);
+
+    const checkbox = container.querySelector<HTMLInputElement>('input[type="checkbox"]')!;
+    expect(checkbox).not.toBeNull();
+    expect(onOverwrite).not.toHaveBeenCalled();
   });
 });

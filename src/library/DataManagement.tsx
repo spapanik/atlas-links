@@ -12,6 +12,9 @@ type DataManagementProps = {
   onImportAtlasLinks: (
     bookmarks: readonly AtlasLinksImportRecord[],
   ) => Promise<AtlasLinksImportResult>;
+  onOverwriteAtlasLinks: (
+    bookmarks: readonly AtlasLinksImportRecord[],
+  ) => Promise<AtlasLinksImportResult>;
   onImportBrowser: (bookmarks: readonly BrowserBookmarkImport[]) => Promise<BrowserImportResult>;
 };
 
@@ -19,6 +22,7 @@ export function DataManagement({
   bookmarks,
   onExport,
   onImportAtlasLinks,
+  onOverwriteAtlasLinks,
   onImportBrowser,
 }: DataManagementProps) {
   const [dialog, setDialog] = useState<'browser' | 'atlas'>();
@@ -92,6 +96,7 @@ export function DataManagement({
             existingBookmarks={bookmarks}
             onClose={closeDialog}
             onImport={onImportAtlasLinks}
+            onOverwrite={onOverwriteAtlasLinks}
           />
         </div>
       )}

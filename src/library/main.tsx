@@ -231,6 +231,7 @@ function Library() {
             downloadAtlasLinksExport(serializeAtlasLinksExport(store));
           }}
           onImportAtlasLinks={(items) => repository.importAtlasLinks(items)}
+          onOverwriteAtlasLinks={(items) => repository.overwriteAtlasLinks(items)}
           onImportBrowser={(items) => repository.importBrowserBookmarks(items)}
         />
         <section className="shortcut-settings" aria-labelledby="shortcuts-title">

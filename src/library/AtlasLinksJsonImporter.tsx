@@ -15,6 +15,7 @@ type AtlasLinksJsonImporterProps = {
   existingBookmarks: readonly Bookmark[];
   onClose: () => void;
   onImport: (bookmarks: readonly AtlasLinksImportRecord[]) => Promise<AtlasLinksImportResult>;
+  onOverwrite: (bookmarks: readonly AtlasLinksImportRecord[]) => Promise<AtlasLinksImportResult>;
 };
 
 function excerpt(value: string, fallback: string): string {
@@ -101,18 +102,21 @@ export function AtlasLinksJsonImporter({
   existingBookmarks,
   onClose,
   onImport,
+  onOverwrite,
 }: AtlasLinksJsonImporterProps) {
   const dialogRef = useRef<HTMLElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
   const completionRef = useRef<HTMLDivElement>(null);
   const busyRef = useRef(false);
+  const [importMode, setImportMode] = useState<'merge' | 'overwrite'>('merge');
   const [fileName, setFileName] = useState('');
   const [parsed, setParsed] = useState<ParsedAtlasLinksExport>();
   const [preview, setPreview] = useState<AtlasLinksImportPreview>();
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [busyMessage, setBusyMessage] = useState('');
+  const [overwriteChecked, setOverwriteChecked] = useState(false);
   const [completion, setCompletion] = useState<{
     created: number;
     updated: number;
@@ -120,7 +124,10 @@ export function AtlasLinksJsonImporter({
     notApplied: number;
   }>();
 
-  const changeCount = (preview?.newBookmarks.length ?? 0) + (preview?.updated.length ?? 0);
+  const changeCount =
+    importMode === 'overwrite'
+      ? (parsed?.bookmarks.length ?? 0)
+      : (preview?.newBookmarks.length ?? 0) + (preview?.updated.length ?? 0);
 
   useEffect(() => inputRef.current?.focus(), []);
   useEffect(() => {
@@ -166,6 +173,7 @@ export function AtlasLinksJsonImporter({
     setParsed(undefined);
     setPreview(undefined);
     setCompletion(undefined);
+    setOverwriteChecked(false);
     setError('');
     if (!/\.json$/i.test(file.name)) {
       setError('Choose an Atlas Links file ending in .json.');
@@ -192,20 +200,35 @@ export function AtlasLinksJsonImporter({
   }
 
   async function confirmImport() {
-    if (!parsed || !preview || changeCount === 0 || busyRef.current) return;
-    const approvedRecords = [...preview.newBookmarks, ...preview.updated].map(
-      (proposal) => proposal.record,
+    if (!parsed || (importMode === 'merge' && !preview) || changeCount === 0 || busyRef.current)
+      return;
+
+    setImportBusy(
+      true,
+      importMode === 'overwrite' ? 'Replacing all bookmarks…' : 'Applying Atlas Links changes…',
     );
-    setImportBusy(true, 'Applying Atlas Links changes…');
     setError('');
     try {
-      const result = await onImport(approvedRecords);
-      setCompletion({
-        created: result.created.length,
-        updated: result.updated.length,
-        unchanged: preview.unchanged.length + result.unchanged,
-        notApplied: parsed.invalid.length + preview.conflicts.length + result.conflicts.length,
-      });
+      if (importMode === 'overwrite') {
+        const result = await onOverwrite(parsed.bookmarks);
+        setCompletion({
+          created: result.created.length,
+          updated: 0,
+          unchanged: 0,
+          notApplied: parsed.invalid.length,
+        });
+      } else {
+        const approvedRecords = [...preview!.newBookmarks, ...preview!.updated].map(
+          (proposal) => proposal.record,
+        );
+        const result = await onImport(approvedRecords);
+        setCompletion({
+          created: result.created.length,
+          updated: result.updated.length,
+          unchanged: preview!.unchanged.length + result.unchanged,
+          notApplied: parsed.invalid.length + preview!.conflicts.length + result.conflicts.length,
+        });
+      }
     } catch {
       setError(
         'The Atlas Links import could not be saved. Your bookmarks were not changed. Try again.',
@@ -230,6 +253,20 @@ export function AtlasLinksJsonImporter({
         on this device.
       </p>
       <label>
+        Import mode
+        <select
+          value={importMode}
+          onChange={(e) => {
+            setImportMode(e.target.value as 'merge' | 'overwrite');
+            setOverwriteChecked(false);
+          }}
+          disabled={busy}
+        >
+          <option value="merge">Merge — keep existing bookmarks, add new ones</option>
+          <option value="overwrite">Overwrite — replace all bookmarks</option>
+        </select>
+      </label>
+      <label>
         Atlas Links JSON file
         <input
           ref={inputRef}
@@ -246,7 +283,25 @@ export function AtlasLinksJsonImporter({
           {error}
         </p>
       )}
-      {parsed && preview && !completion && (
+      {importMode === 'overwrite' && parsed && !completion && (
+        <section className="import-review" aria-labelledby="atlas-import-review-title">
+          <h3 id="atlas-import-review-title">Overwrite bookmarks</h3>
+          <p className="warning">
+            This will replace all {existingBookmarks.length} existing bookmarks with{' '}
+            {parsed.bookmarks.length} bookmarks from the file. Any bookmarks not in the file will be
+            permanently removed.
+          </p>
+          <label className="confirm-overwrite">
+            <input
+              type="checkbox"
+              checked={overwriteChecked}
+              onChange={(e) => setOverwriteChecked(e.currentTarget.checked)}
+            />
+            I understand, replace all my bookmarks
+          </label>
+        </section>
+      )}
+      {importMode === 'merge' && parsed && preview && !completion && (
         <AtlasLinksImportReview parsed={parsed} preview={preview} />
       )}
       {completion && (
@@ -267,9 +322,11 @@ export function AtlasLinksJsonImporter({
             ref={confirmButtonRef}
             type="button"
             onClick={() => void confirmImport()}
-            disabled={busy || changeCount === 0}
+            disabled={
+              busy || changeCount === 0 || (importMode === 'overwrite' && !overwriteChecked)
+            }
           >
-            {busy ? 'Applying…' : 'Apply changes'}
+            {busy ? 'Applying…' : importMode === 'overwrite' ? 'Replace all' : 'Apply changes'}
           </button>
         )}
       </div>

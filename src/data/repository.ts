@@ -28,6 +28,7 @@ export interface BookmarkRepository {
   remove(id: string): Promise<void>;
   importBrowserBookmarks(inputs: readonly BrowserBookmarkImport[]): Promise<BrowserImportResult>;
   importAtlasLinks(inputs: readonly AtlasLinksImportRecord[]): Promise<AtlasLinksImportResult>;
+  overwriteAtlasLinks(inputs: readonly AtlasLinksImportRecord[]): Promise<AtlasLinksImportResult>;
   subscribe(listener: () => void): () => void;
 }
 
@@ -250,5 +251,42 @@ export class ChromeBookmarkRepository implements BookmarkRepository {
     };
     chrome.storage.onChanged.addListener(handler);
     return () => chrome.storage.onChanged.removeListener(handler);
+  }
+
+  async overwriteAtlasLinks(inputs: readonly AtlasLinksImportRecord[]) {
+    const result = await withBookmarkStoreLock(async () => {
+      const store = await this.readStore();
+      const now = new Date().toISOString();
+      const usedIds = new Set<string>();
+      const created: Bookmark[] = inputs.map((record) => {
+        let id = record.id;
+        while (!id || usedIds.has(id)) id = crypto.randomUUID();
+        usedIds.add(id);
+        return {
+          id,
+          url: record.url,
+          name: record.name,
+          description: record.description,
+          tags: record.tags,
+          createdAt: record.createdAt ?? now,
+          updatedAt: record.updatedAt ?? now,
+        };
+      });
+      await this.writeStore(
+        {
+          ...store,
+          schemaVersion: 1,
+          revision: store.revision + 1,
+          updatedAt: now,
+          bookmarks: created,
+        },
+        true,
+      );
+      return { created, updated: [], unchanged: 0, conflicts: [] };
+    });
+    if (result.created.length > 0) {
+      void chrome.runtime.sendMessage({ type: 'schedule-sync' }).catch(() => undefined);
+    }
+    return result;
   }
 }

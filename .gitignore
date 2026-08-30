@@ -1,9 +1,16 @@
-coverage/
+# installation/build artifacts
 node_modules/
-.pnpm-store/
+coverage/
 dist/
+/atlas-links.json
+*.tsbuildinfo
 *.zip
 *.crx
+
+
+# local dev
+local/
+local.*
 .env
 .env.*
 !.env.example
@@ -12,5 +19,3 @@ dist/
 *.p12
 *.pfx
 *.gpg
-/atlas-links.json
-*.tsbuildinfo

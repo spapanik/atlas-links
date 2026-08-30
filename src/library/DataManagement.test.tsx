@@ -61,6 +61,12 @@ describe('DataManagement', () => {
             unchanged: 0,
             conflicts: [],
           })}
+          onOverwriteAtlasLinks={async () => ({
+            created: [],
+            updated: [],
+            unchanged: 0,
+            conflicts: [],
+          })}
           onImportBrowser={async () => ({ imported: [], skipped: 0 })}
         />,
       );
@@ -87,6 +93,12 @@ describe('DataManagement', () => {
           bookmarks={[]}
           onExport={async () => undefined}
           onImportAtlasLinks={async () => ({
+            created: [],
+            updated: [],
+            unchanged: 0,
+            conflicts: [],
+          })}
+          onOverwriteAtlasLinks={async () => ({
             created: [],
             updated: [],
             unchanged: 0,

@@ -64,6 +64,12 @@ function Library() {
     () => searchBookmarks(bookmarks, query, selected, sort),
     [bookmarks, query, selected, sort],
   );
+  const visibleTags = useMemo(() => {
+    if (selected.length === 0 && !query.trim()) return tags;
+    const relevant = new Set(results.flatMap((b) => b.tags));
+    selected.forEach((tag) => relevant.add(tag));
+    return tags.filter((tag) => relevant.has(tag));
+  }, [tags, results, selected, query]);
   const captureShortcut = shortcutLabel(commands, '_execute_action');
   const searchShortcut = shortcutLabel(commands, 'search-newtab');
   const sidePanelShortcut = shortcutLabel(commands, 'search-sidebar');
@@ -144,11 +150,11 @@ function Library() {
             <option value="name">Name A–Z</option>
           </select>
         </section>
-        {tags.length > 0 && (
+        {visibleTags.length > 0 && (
           <CollapsibleTagFilter
             className="filters"
             label="Filter:"
-            tags={tags}
+            tags={visibleTags}
             selectedTags={selected}
             showRemoveIndicator
             onToggleTag={(tag) =>

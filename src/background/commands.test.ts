@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { handleCommand } from './commands';
+import { _resetOpenWindows, handleCommand } from './commands';
 
 function navigation(overrides: Record<string, unknown> = {}) {
   return {
@@ -25,6 +25,7 @@ describe('background commands', () => {
   });
 
   it('opens the side panel in the invoking tab window and requests search focus', async () => {
+    _resetOpenWindows();
     const openSidePanel = vi.fn(async () => undefined);
     const focusSidePanel = vi.fn(async () => undefined);
     const adapter = navigation({ openSidePanel, focusSidePanel });
@@ -37,7 +38,26 @@ describe('background commands', () => {
     expect(adapter.createTab).not.toHaveBeenCalled();
   });
 
+  it('closes the side panel when the shortcut is pressed again (toggle)', async () => {
+    _resetOpenWindows();
+    const openSidePanel = vi.fn(async () => undefined);
+    const closeSidePanel = vi.fn(async () => undefined);
+    const adapter = navigation({ openSidePanel, closeSidePanel });
+
+    // First press opens
+    await handleCommand('search-sidebar', adapter, { windowId: 73 });
+    expect(openSidePanel).toHaveBeenCalledWith({ windowId: 73 });
+    expect(closeSidePanel).not.toHaveBeenCalled();
+
+    // Second press closes (toggle)
+    await handleCommand('search-sidebar', adapter, { windowId: 73 });
+    expect(openSidePanel).toHaveBeenCalledOnce();
+    expect(closeSidePanel).toHaveBeenCalledOnce();
+    expect(closeSidePanel).toHaveBeenCalledWith({ windowId: 73 });
+  });
+
   it('falls back to a search tab with a visible-notice flag when the API is missing', async () => {
+    _resetOpenWindows();
     const adapter = navigation();
 
     expect(await handleCommand('search-sidebar', adapter, { windowId: 73 })).toBe(true);
@@ -48,6 +68,7 @@ describe('background commands', () => {
   });
 
   it('falls back when Chrome rejects the side-panel request', async () => {
+    _resetOpenWindows();
     const openSidePanel = vi.fn(async () => Promise.reject(new Error('Unavailable')));
     const adapter = navigation({ openSidePanel });
 

@@ -43,6 +43,12 @@ export function SearchSurface({
     () => searchBookmarks(bookmarks, query, selectedTags),
     [bookmarks, query, selectedTags],
   );
+  const visibleTags = useMemo(() => {
+    if (selectedTags.length === 0 && !query.trim()) return tags;
+    const relevant = new Set(results.flatMap((b) => b.tags));
+    selectedTags.forEach((tag) => relevant.add(tag));
+    return tags.filter((tag) => relevant.has(tag));
+  }, [tags, results, selectedTags, query]);
   const hasBookmarks = bookmarks.some((bookmark) => !bookmark.deletedAt);
 
   useEffect(() => {
@@ -134,27 +140,11 @@ export function SearchSurface({
           </span>
         </section>
 
-        {selectedTags.length > 0 && (
-          <section className="selected-filters" aria-label="Selected tag filters">
-            {selectedTags.map((tag) => (
-              <button
-                className="selected-tag"
-                key={tag}
-                aria-label={`Remove ${tag} filter`}
-                onClick={() => toggleTag(tag)}
-              >
-                <span>{tag}</span>
-                <span aria-hidden="true">×</span>
-              </button>
-            ))}
-          </section>
-        )}
-
-        {tags.length > 0 && (
+        {visibleTags.length > 0 && (
           <CollapsibleTagFilter
             className="tag-picker"
             label="Tags"
-            tags={tags}
+            tags={visibleTags}
             selectedTags={selectedTags}
             onToggleTag={toggleTag}
           />

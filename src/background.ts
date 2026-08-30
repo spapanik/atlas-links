@@ -63,6 +63,10 @@ chrome.commands.onCommand.addListener((command, tab) => {
         typeof chrome.sidePanel?.open === 'function'
           ? (properties) => chrome.sidePanel.open(properties)
           : undefined,
+      closeSidePanel:
+        typeof chrome.sidePanel?.close === 'function'
+          ? (properties) => chrome.sidePanel.close(properties)
+          : undefined,
       focusSidePanel: () => chrome.runtime.sendMessage({ type: FOCUS_SIDE_PANEL_MESSAGE }),
     },
     tab,

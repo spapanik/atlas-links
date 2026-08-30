@@ -37,8 +37,8 @@
     },
     "search-sidebar": {
       "suggested_key": {
-        "default": "Ctrl+Shift+L",
-        "mac": "Command+Shift+L"
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
       },
       "description": "Search Atlas Links in the side panel"
     }

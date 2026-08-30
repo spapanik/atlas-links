@@ -55,26 +55,6 @@ body {
   padding-inline: 0.9rem;
   font-size: 1rem;
 }
-.selected-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin: 0.8rem 0;
-}
-.selected-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.42rem;
-  border: 1px solid var(--color-border);
-  border-radius: 99px;
-  background: var(--color-tag-bg);
-  color: var(--color-tag-text);
-  padding: 0.34rem 0.62rem;
-  font-size: 0.76rem;
-}
-.selected-tag:hover {
-  background: var(--color-secondary-hover);
-}
 .tag-picker {
   margin: 0.9rem 0 1.3rem;
 }

@@ -45,11 +45,11 @@ describe('SearchSurface', () => {
     expect(markup.indexOf('TypeScript handbook')).toBeLessThan(markup.indexOf('Frontend notes'));
   });
 
-  it('combines search with every selected tag and renders removable chips', () => {
+  it('combines search with every selected tag and shows only relevant tags in the filter', () => {
     const markup = render({ initialQuery: 'type', initialTags: ['Code', 'Reference'] });
     expect(markup).toContain('TypeScript handbook');
     expect(markup).not.toContain('Frontend notes');
-    expect(markup).toContain('aria-label="Remove Reference filter"');
+    expect(markup).not.toContain('Personal');
   });
 
   it.each(['page', 'panel'] as const)(
@@ -74,6 +74,11 @@ describe('SearchSurface', () => {
     expect(markup).toContain('aria-label="Show all tags"');
     expect(markup).toContain('aria-expanded="false"');
     expect(markup).toContain('tag-filter-ellipsis');
+  });
+
+  it('dimmes tags that are not present in any filtered result', () => {
+    const markup = render({ initialTags: ['Code'] });
+    expect(markup).not.toContain('Personal');
   });
 
   it('renders empty, no-results, and repository-error states', () => {

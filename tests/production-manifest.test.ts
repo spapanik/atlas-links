@@ -81,4 +81,14 @@ describe('Web Store manifest verification', () => {
       key: 'development-public-key',
     });
   });
+
+  it('uses the supplied package version for the built manifest', () => {
+    const configured = configureBuiltManifest(manifest({ version: '0.1.0' }), {
+      oauthClientId: '',
+      extensionKey: '',
+      extensionVersion: '0.2.0',
+    });
+
+    expect(configured.version).toBe('0.2.0');
+  });
 });

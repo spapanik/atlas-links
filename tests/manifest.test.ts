@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 type Manifest = {
+  version: string;
   permissions: string[];
   host_permissions: string[];
   action: { default_popup: string };
@@ -16,8 +17,17 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 const manifest = JSON.parse(
   readFileSync(resolve(root, 'public/manifest.json'), 'utf8'),
 ) as Manifest;
+const packageVersion = (
+  JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8')) as {
+    version: string;
+  }
+).version;
 
 describe('shortcut manifest configuration', () => {
+  it('keeps the source manifest version aligned with package.json', () => {
+    expect(manifest.version).toBe(packageVersion);
+  });
+
   it('keeps the action popup and activeTab permission without broad tabs access', () => {
     expect(manifest.action.default_popup).toBe('popup.html');
     expect(manifest.permissions).toContain('activeTab');

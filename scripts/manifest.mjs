@@ -31,11 +31,18 @@ export function assertProductionOAuthClientId(value) {
 
 export function configureBuiltManifest(
   manifest,
-  { oauthClientId, extensionKey, webStore = false },
+  { oauthClientId, extensionKey, extensionVersion, webStore = false },
 ) {
   const configured = structuredClone(manifest);
   if (!configured.oauth2 || typeof configured.oauth2 !== 'object') {
     throw new Error('Built manifest is missing its oauth2 configuration.');
+  }
+
+  if (extensionVersion !== undefined) {
+    if (typeof extensionVersion !== 'string' || !extensionVersion.trim()) {
+      throw new Error('Built manifest requires a non-empty package version.');
+    }
+    configured.version = extensionVersion.trim();
   }
 
   configured.oauth2.client_id = webStore

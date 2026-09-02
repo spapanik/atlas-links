@@ -632,3 +632,52 @@ The build falls back to a placeholder OAuth client ID when `.env.local` is absen
 ### QA verification
 
 - Run all three scripts on a machine with `.env.local` and one without, and inspect the resulting `dist/manifest.json` and zip contents.
+
+## AL-114 — Publish the privacy policy and complete the Web Store and OAuth disclosures
+
+### Problem
+
+The Chrome Web Store requires a linked privacy policy for extensions that handle user data, and Atlas Links handles active-tab URLs and titles, user-entered bookmark metadata, and Google authorization — local-only processing still counts as user-data handling under Chrome's policy. Optional sync uses the non-sensitive `drive.appdata` scope, but the extension must still disclose its Google API use, comply with Limited Use, and present an OAuth app identity that users can trust. The repository now contains the dedicated policy, its Pages deployment workflow, and links from the README and extension; the first public deployment, durable dashboard declarations, OAuth configuration review, and complete listing materials remain. Claims spread across the extension, listing, privacy policy, OAuth consent screen, and dashboard must describe the same behavior.
+
+### Scope
+
+- Add a plain-language policy document in the repository and publish it over HTTPS at a stable URL that requires no sign-in. A GitHub Pages URL is acceptable; buying or controlling a custom domain is not a requirement for this ticket. Record the public URL in the repository so it is not known only to the dashboard.
+- Describe every relevant data path accurately:
+  - opening the popup reads the active tab's URL and title after the user's action;
+  - bookmark URLs, names, descriptions, tags, timestamps, stable IDs, revision/device metadata, and deletion tombstones are stored in `chrome.storage.local`;
+  - optional Google sign-in uses `chrome.identity`, and optional sync stores one versioned JSON document in the signed-in user's private Drive `appDataFolder`;
+  - the extension does not operate a developer backend, retain OAuth tokens outside Chrome identity facilities, sell data, use data for advertising, allow developer personnel to read bookmark data, or collect analytics or telemetry;
+  - browser-bookmark and Atlas Links imports are parsed locally, and exports are written only to the destination the user chooses;
+  - deleting a bookmark creates a tombstone so deletion can propagate, signing out retains local bookmarks while attempting to revoke Google access, and signing out does not itself delete the existing Drive backup.
+- Explain retention and user control without promising controls that do not exist. Cover individual bookmark deletion, sign-out, revoking Atlas Links in the Google Account, clearing extension storage/uninstalling, and the fact that synced deletion markers may remain in the Drive document for conflict resolution. State explicitly that uninstalling clears the extension's local storage but does not itself delete the existing Drive app-data file.
+- Include a working publisher privacy/support contact and the required affirmative Limited Use statement: “The use of information received from Google APIs will adhere to the Chrome Web Store User Data Policy, including the Limited Use requirements.”
+- Link the hosted policy from the README, the extension's library/footer, and the designated privacy-policy field in the Chrome Web Store dashboard.
+- Add a repository-owned dashboard disclosure draft containing:
+  - a narrow single-purpose statement;
+  - the data-category selections and the reasoning for each selection, including active-tab URL/title, user-authored bookmark metadata, and Google authorization;
+  - a justification for `storage`, `activeTab`, `identity`, `alarms`, and `sidePanel`, plus both Google host permissions;
+  - the declaration that the package executes no remote code;
+  - the Limited Use certifications and a cross-check against the published policy.
+- Confirm that the Google Auth Platform project declares only the non-sensitive `drive.appdata` scope, the Chrome Extension OAuth client is bound to the Web Store item ID, the app audience permits the intended users, and the consent screen shows the same product name, privacy URL, and support contact. If a fresh non-test user sees an unverified-app warning, record the exact verification state and complete the applicable basic OAuth app/branding verification before public release; do not describe `drive.appdata` as a sensitive or restricted scope.
+- Prepare the remaining store-facing materials needed to make the privacy disclosures prominent before installation: accurate detailed description, category/language, reviewer test instructions, at least one full-bleed 1280×800 or 640×400 screenshot showing actual functionality, and the required 440×280 small promotional tile. Prefer screenshots covering the popup, library, search, and optional sync state; do not show real private bookmarks or account information.
+- Every claim must match observable product behavior. Review and update the policy and dashboard draft whenever a release changes permissions, network destinations, data handling, or retention.
+
+### Acceptance criteria
+
+- The repository policy and hosted copy contain the same substantive text, the public HTTPS URL works in a signed-out browser, and the policy is reachable from the README, extension UI, and dashboard privacy field.
+- The policy identifies every stored or transmitted data type, destination, purpose, retention/control behavior, and third party; it includes the Limited Use statement and a working contact method.
+- The dashboard privacy tab is complete and consistent with the repository draft: policy URL, single purpose, permission and host justifications, remote-code declaration, data-category selections, and Limited Use certifications.
+- A production/trusted-testing build signs in with a fresh intended-user account without an unverified-app warning, or applicable OAuth verification has been submitted and the remaining external status is recorded explicitly rather than calling the ticket complete.
+- Required listing copy and graphic assets exist, contain no private data, and prominently disclose that bookmarks are local by default and are sent to the user's private Drive app-data area only after optional Google sign-in.
+- No statement in the policy, dashboard, listing, OAuth consent screen, README, or extension UI contradicts observable behavior.
+
+### Tests and verification
+
+- Review the policy and draft disclosures against Chrome's user-data FAQ (https://developer.chrome.com/docs/webstore/program-policies/user-data-faq), dashboard privacy-field documentation (https://developer.chrome.com/docs/webstore/cws-dashboard-privacy), program policies (https://developer.chrome.com/docs/webstore/program-policies/policies), and Drive scope classification (https://developers.google.com/workspace/drive/api/guides/api-specific-auth).
+- Run `pnpm format`, `pnpm lint`, `pnpm test:coverage`, and `pnpm build`, in that order.
+
+### QA verification
+
+- Open the hosted policy in a private/signed-out browser window and check its links, contact method, mobile readability, and substantive parity with the repository copy.
+- Walk through first save, import, export, Google sign-in, sync, bookmark deletion, and sign-out while comparing visible copy and network/storage behavior against the policy. Repeat sign-in with an intended-user account that is not merely an OAuth test user.
+- Inspect the completed dashboard fields and final listing screenshots together; do not infer dashboard completion from repository drafts alone.

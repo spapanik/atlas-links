@@ -570,13 +570,13 @@ Three sync requirements from the agent guide are unmet. First, retryable failure
 
 - Add a typed failure code to sync status and structured Drive errors at the adapter boundary. At minimum distinguish `offline`, `authorization`, `rate-limit`, `quota`, `corrupt-remote`, and `transient-service`; UI and retry decisions must never depend on matching English message text.
 - Classify from both HTTP status and Google's structured error reason where available:
-  - network failures that indicate no usable connection are `offline`;
-  - invalid/expired credentials and consent denial are `authorization`;
-  - `429`, retryable rate-limit reasons, and Google responses with a usable `Retry-After` are `rate-limit`;
-  - permanent daily/storage/project quota exhaustion is `quota`;
-  - invalid JSON, an unsupported schema, validation failure, or a remote document over the documented safe size limit is `corrupt-remote`;
-  - `408` and retryable `5xx` responses are `transient-service`.
-    Do not treat every `403` as retryable or every failed `fetch` as proof that the browser is offline.
+    - network failures that indicate no usable connection are `offline`;
+    - invalid/expired credentials and consent denial are `authorization`;
+    - `429`, retryable rate-limit reasons, and Google responses with a usable `Retry-After` are `rate-limit`;
+    - permanent daily/storage/project quota exhaustion is `quota`;
+    - invalid JSON, an unsupported schema, validation failure, or a remote document over the documented safe size limit is `corrupt-remote`;
+    - `408` and retryable `5xx` responses are `transient-service`.
+      Do not treat every `403` as retryable or every failed `fetch` as proof that the browser is offline.
 - Persist retry metadata separately from the user-facing status: failure code, automatic-attempt count, and `nextAttemptAt`. Schedule retries with a dedicated named Chrome alarm so service-worker termination cannot lose the backoff and ordinary mutation debounce cannot silently reset it. Clear the retry alarm and metadata after success, sign-out, or an explicit cancellation/reset.
 - Automatically retry only `offline`, `rate-limit`, and `transient-service`. Use `Retry-After` when valid; otherwise permit at most four scheduled retries after the initial failure, with delays of 0.5, 1, 2, and 4 minutes. Never auto-retry `authorization`, permanent `quota`, or `corrupt-remote`. A new mutation marks the store dirty but does not reset an existing attempt count or shorten a server-requested delay.
 - Keep a visible recovery action after every failure. For retry-safe failures, manual retry runs immediately and starts a new bounded retry sequence; authorization failures present **Sign in again** and use an interactive token request; corrupt-remote failures present the explicit recovery choices below instead of a blind retry. Repeated button clicks and an alarm firing at the same time must still collapse through the engine's single-flight protection.
@@ -643,21 +643,21 @@ The Chrome Web Store requires a linked privacy policy for extensions that handle
 
 - Add a plain-language policy document in the repository and publish it over HTTPS at a stable URL that requires no sign-in. A GitHub Pages URL is acceptable; buying or controlling a custom domain is not a requirement for this ticket. Record the public URL in the repository so it is not known only to the dashboard.
 - Describe every relevant data path accurately:
-  - opening the popup reads the active tab's URL and title after the user's action;
-  - bookmark URLs, names, descriptions, tags, timestamps, stable IDs, revision/device metadata, and deletion tombstones are stored in `chrome.storage.local`;
-  - optional Google sign-in uses `chrome.identity`, and optional sync stores one versioned JSON document in the signed-in user's private Drive `appDataFolder`;
-  - the extension does not operate a developer backend, retain OAuth tokens outside Chrome identity facilities, sell data, use data for advertising, allow developer personnel to read bookmark data, or collect analytics or telemetry;
-  - browser-bookmark and Atlas Links imports are parsed locally, and exports are written only to the destination the user chooses;
-  - deleting a bookmark creates a tombstone so deletion can propagate, signing out retains local bookmarks while attempting to revoke Google access, and signing out does not itself delete the existing Drive backup.
+    - opening the popup reads the active tab's URL and title after the user's action;
+    - bookmark URLs, names, descriptions, tags, timestamps, stable IDs, revision/device metadata, and deletion tombstones are stored in `chrome.storage.local`;
+    - optional Google sign-in uses `chrome.identity`, and optional sync stores one versioned JSON document in the signed-in user's private Drive `appDataFolder`;
+    - the extension does not operate a developer backend, retain OAuth tokens outside Chrome identity facilities, sell data, use data for advertising, allow developer personnel to read bookmark data, or collect analytics or telemetry;
+    - browser-bookmark and Atlas Links imports are parsed locally, and exports are written only to the destination the user chooses;
+    - deleting a bookmark creates a tombstone so deletion can propagate, signing out retains local bookmarks while attempting to revoke Google access, and signing out does not itself delete the existing Drive backup.
 - Explain retention and user control without promising controls that do not exist. Cover individual bookmark deletion, sign-out, revoking Atlas Links in the Google Account, clearing extension storage/uninstalling, and the fact that synced deletion markers may remain in the Drive document for conflict resolution. State explicitly that uninstalling clears the extension's local storage but does not itself delete the existing Drive app-data file.
 - Include a working publisher privacy/support contact and the required affirmative Limited Use statement: “The use of information received from Google APIs will adhere to the Chrome Web Store User Data Policy, including the Limited Use requirements.”
 - Link the hosted policy from the README, the extension's library/footer, and the designated privacy-policy field in the Chrome Web Store dashboard.
 - Add a repository-owned dashboard disclosure draft containing:
-  - a narrow single-purpose statement;
-  - the data-category selections and the reasoning for each selection, including active-tab URL/title, user-authored bookmark metadata, and Google authorization;
-  - a justification for `storage`, `activeTab`, `identity`, `alarms`, and `sidePanel`, plus both Google host permissions;
-  - the declaration that the package executes no remote code;
-  - the Limited Use certifications and a cross-check against the published policy.
+    - a narrow single-purpose statement;
+    - the data-category selections and the reasoning for each selection, including active-tab URL/title, user-authored bookmark metadata, and Google authorization;
+    - a justification for `storage`, `activeTab`, `identity`, `alarms`, and `sidePanel`, plus both Google host permissions;
+    - the declaration that the package executes no remote code;
+    - the Limited Use certifications and a cross-check against the published policy.
 - Confirm that the Google Auth Platform project declares only the non-sensitive `drive.appdata` scope, the Chrome Extension OAuth client is bound to the Web Store item ID, the app audience permits the intended users, and the consent screen shows the same product name, privacy URL, and support contact. If a fresh non-test user sees an unverified-app warning, record the exact verification state and complete the applicable basic OAuth app/branding verification before public release; do not describe `drive.appdata` as a sensitive or restricted scope.
 - Prepare the remaining store-facing materials needed to make the privacy disclosures prominent before installation: accurate detailed description, category/language, reviewer test instructions, at least one full-bleed 1280×800 or 640×400 screenshot showing actual functionality, and the required 440×280 small promotional tile. Prefer screenshots covering the popup, library, search, and optional sync state; do not show real private bookmarks or account information.
 - Every claim must match observable product behavior. Review and update the policy and dashboard draft whenever a release changes permissions, network destinations, data handling, or retention.

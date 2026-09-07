@@ -67,12 +67,12 @@ With Supabase, storage and bandwidth are billed to Atlas Links, not to the user.
 
 ### Scope
 
-- Enforce all limits in Postgres, in the same committed SQL as the AL-118 table and RLS policies (for example a `BEFORE INSERT OR UPDATE` trigger plus `CHECK` constraints on `sync_documents`), so a direct API call with a valid user session is bound by exactly the same rules as the extension. RLS controls *who* may write; this ticket controls *what* may be written.
+- Enforce all limits in Postgres, in the same committed SQL as the AL-118 table and RLS policies (for example a `BEFORE INSERT OR UPDATE` trigger plus `CHECK` constraints on `sync_documents`), so a direct API call with a valid user session is bound by exactly the same rules as the extension. RLS controls _who_ may write; this ticket controls _what_ may be written.
 - Define and document concrete product limits. At minimum:
-  - a maximum total serialized document size per user (smaller than the existing 5 MB transport ceiling — the server cap is the storage budget, and the client ceiling must be lowered or aligned so legitimate syncs never approach it);
-  - a maximum number of active bookmarks and a maximum number of retained tombstones per document;
-  - a maximum length for bookmark `name`, `description`, and `url`, and a maximum number and length of tags per bookmark;
-  - structural validity: the `document` jsonb must have the shape of a versioned `BookmarkStore` (`schemaVersion`, bookmarks array of objects with the expected string/array field types), so arbitrary JSON cannot be stored under the user's row.
+    - a maximum total serialized document size per user (smaller than the existing 5 MB transport ceiling — the server cap is the storage budget, and the client ceiling must be lowered or aligned so legitimate syncs never approach it);
+    - a maximum number of active bookmarks and a maximum number of retained tombstones per document;
+    - a maximum length for bookmark `name`, `description`, and `url`, and a maximum number and length of tags per bookmark;
+    - structural validity: the `document` jsonb must have the shape of a versioned `BookmarkStore` (`schemaVersion`, bookmarks array of objects with the expected string/array field types), so arbitrary JSON cannot be stored under the user's row.
 - A rejected write must fail the transaction with a distinguishable Postgres error (for example a dedicated `SQLSTATE`/`raise exception` message per limit class). It must never partially update the row or corrupt the user's existing synced document.
 - Map server-side limit rejections in the Supabase remote-store adapter to the typed sync failure model without matching free-text messages: limit violations are non-retryable (a bounded document the server refuses is not a transient failure). Present an understandable message telling the user their collection exceeds Atlas Links' storage limits, alongside the existing **Replace corrupt backup with local data** distinction — this is not corrupt-remote and must not offer destructive recovery.
 - Mirror the same limits in the client validation path so the extension rejects or warns before attempting an upload that the server would refuse, and keep the two limit definitions consistent from one documented source of truth (the database SQL is authoritative; the client constants must match it, with a test asserting they agree).

@@ -33,16 +33,16 @@ The Google OAuth client is associated with Chrome Web Store extension ID `nckagl
 2. Copy the item's **public key** from its package details. This is a long base64 value, not the 32-character extension ID. If the dashboard does not expose it, retrieve the draft item's `publicKey` through the Chrome Web Store API or test a Web Store-installed trusted-testing build.
 3. Put both values in `.env.local`:
 
-   ```env
-   VITE_GOOGLE_OAUTH_CLIENT_ID=your-extension-client-id.apps.googleusercontent.com
-   VITE_CHROME_EXTENSION_KEY=your-web-store-item-public-key
-   ```
+    ```env
+    VITE_GOOGLE_OAUTH_CLIENT_ID=your-extension-client-id.apps.googleusercontent.com
+    VITE_CHROME_EXTENSION_KEY=your-web-store-item-public-key
+    ```
 
 4. Rebuild the unpacked extension:
 
-   ```bash
-   pnpm build
-   ```
+    ```bash
+    pnpm build
+    ```
 
 5. Open `chrome://extensions`, enable **Developer mode**, remove any older unpacked Atlas Links installation with a different ID, choose **Load unpacked**, and select `dist`.
 6. Confirm Chrome shows extension ID `nckaglmagjfjlmpmaondfpmljinpdnfi`, then test **Sign in with Google** using an account allowed by the Google Auth Platform audience configuration.
@@ -101,20 +101,20 @@ The interchange format is deliberately separate from the internal local and Driv
 
 ```json
 {
-  "format": "atlas-links",
-  "schemaVersion": 1,
-  "exportedAt": "2026-07-14T12:00:00.000Z",
-  "bookmarks": [
-    {
-      "id": "7df16c29-ad8a-46dd-b05f-7abda50960d9",
-      "url": "https://example.com/reference",
-      "name": "Example reference",
-      "description": "A useful page",
-      "tags": ["Reference", "Work"],
-      "createdAt": "2026-06-01T09:30:00.000Z",
-      "updatedAt": "2026-07-10T16:45:00.000Z"
-    }
-  ]
+    "format": "atlas-links",
+    "schemaVersion": 1,
+    "exportedAt": "2026-07-14T12:00:00.000Z",
+    "bookmarks": [
+        {
+            "id": "7df16c29-ad8a-46dd-b05f-7abda50960d9",
+            "url": "https://example.com/reference",
+            "name": "Example reference",
+            "description": "A useful page",
+            "tags": ["Reference", "Work"],
+            "createdAt": "2026-06-01T09:30:00.000Z",
+            "updatedAt": "2026-07-10T16:45:00.000Z"
+        }
+    ]
 }
 ```
 

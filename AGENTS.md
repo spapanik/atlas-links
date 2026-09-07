@@ -71,22 +71,22 @@ Use a versioned, serializable model. Dates are ISO 8601 UTC strings.
 
 ```ts
 type Bookmark = {
-  id: string; // UUID generated once and stable across devices
-  url: string;
-  name: string;
-  description: string;
-  tags: string[]; // normalized display values, unique per bookmark
-  createdAt: string;
-  updatedAt: string;
-  deletedAt?: string; // tombstone retained long enough to sync deletions
+    id: string; // UUID generated once and stable across devices
+    url: string;
+    name: string;
+    description: string;
+    tags: string[]; // normalized display values, unique per bookmark
+    createdAt: string;
+    updatedAt: string;
+    deletedAt?: string; // tombstone retained long enough to sync deletions
 };
 
 type BookmarkStore = {
-  schemaVersion: 1;
-  revision: number;
-  deviceId: string;
-  updatedAt: string;
-  bookmarks: Bookmark[];
+    schemaVersion: 1;
+    revision: number;
+    deviceId: string;
+    updatedAt: string;
+    bookmarks: Bookmark[];
 };
 ```
 

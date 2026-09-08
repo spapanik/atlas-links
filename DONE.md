@@ -4,6 +4,18 @@
 
 These completed tickets extended Atlas Links' capture, search, branding, and library-management flows without changing its local-first storage or sync model.
 
+## Shortcut defaults and capture wording
+
+- Set suggested capture, new-tab search, and side-panel shortcuts to Command+Shift+S/K/A on macOS and Ctrl+Shift+S/K/A on Windows/Linux.
+- Use “Save or update a link in Atlas Links” in the library shortcut summary and toolbar tooltip, retaining the native popup command and browser-owned “Activate the extension” label.
+- Document defaults, reassignment, and existing-assignment/conflict behavior; assert the exact defaults in manifest tests.
+
+### QA verification
+
+- On a fresh profile, verify available default shortcuts open the capture popup, new-tab search, and side panel in Chrome and Brave.
+- Verify existing customized assignments remain usable and the library reflects actual bindings.
+- Check the longer capture label and toolbar tooltip, including keyboard navigation and narrow layouts.
+
 ## AL-101 — Add light, dark, and system theme preferences
 
 ### User story

@@ -13,7 +13,7 @@
     "permissions": ["storage", "activeTab", "identity", "alarms", "sidePanel"],
     "host_permissions": ["https://www.googleapis.com/*", "https://oauth2.googleapis.com/*"],
     "action": {
-        "default_title": "Save to Atlas Links",
+        "default_title": "Save or update a link in Atlas Links",
         "default_popup": "popup.html",
         "default_icon": {
             "16": "icons/atlas-links-16.png",
@@ -24,8 +24,8 @@
     "commands": {
         "_execute_action": {
             "suggested_key": {
-                "default": "Ctrl+Shift+Y",
-                "mac": "Command+Shift+Y"
+                "default": "Ctrl+Shift+S",
+                "mac": "Command+Shift+S"
             }
         },
         "search-newtab": {
@@ -37,8 +37,8 @@
         },
         "search-sidebar": {
             "suggested_key": {
-                "default": "Ctrl+Shift+S",
-                "mac": "Command+Shift+S"
+                "default": "Ctrl+Shift+A",
+                "mac": "Command+Shift+A"
             },
             "description": "Search Atlas Links in the side panel"
         }

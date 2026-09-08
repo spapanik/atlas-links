@@ -244,7 +244,7 @@ function Library() {
                     <div>
                         <h2 id="shortcuts-title">Keyboard shortcuts</h2>
                         <p>
-                            Save or update <kbd>{captureShortcut}</kbd>
+                            Save or update a link in Atlas Links <kbd>{captureShortcut}</kbd>
                             <span aria-hidden="true"> · </span>
                             Search <kbd>{searchShortcut}</kbd>
                             <span aria-hidden="true"> · </span>

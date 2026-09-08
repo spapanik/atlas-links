@@ -42,9 +42,12 @@ describe('shortcut manifest configuration', () => {
     });
 
     it('declares capture and new-tab search shortcuts', () => {
-        expect(manifest.commands._execute_action.suggested_key?.default).toBeTruthy();
+        expect(manifest.commands._execute_action.suggested_key).toEqual({
+            default: 'Ctrl+Shift+S',
+            mac: 'Command+Shift+S',
+        });
         expect(manifest.commands['search-newtab']).toMatchObject({
-            suggested_key: { default: expect.any(String), mac: expect.any(String) },
+            suggested_key: { default: 'Ctrl+Shift+K', mac: 'Command+Shift+K' },
             description: expect.stringContaining('Search Atlas Links'),
         });
     });
@@ -54,7 +57,7 @@ describe('shortcut manifest configuration', () => {
         expect(manifest.permissions).toContain('sidePanel');
         expect(manifest.side_panel.default_path).toBe('sidepanel.html');
         expect(manifest.commands['search-sidebar']).toMatchObject({
-            suggested_key: { default: expect.any(String), mac: expect.any(String) },
+            suggested_key: { default: 'Ctrl+Shift+A', mac: 'Command+Shift+A' },
             description: expect.stringContaining('side panel'),
         });
         expect(manifest.permissions).not.toContain('tabs');

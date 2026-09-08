@@ -2,6 +2,18 @@
 
 Atlas Links is a local-first Chrome extension for capturing, organizing, searching, and optionally syncing bookmarks through the private Google Drive `appDataFolder`.
 
+## Keyboard shortcuts
+
+| Action                               | macOS           | Windows/Linux |
+| ------------------------------------ | --------------- | ------------- |
+| Save or update a link in Atlas Links | Command+Shift+S | Ctrl+Shift+S  |
+| Search Atlas Links in a new tab      | Command+Shift+K | Ctrl+Shift+K  |
+| Search Atlas Links in the side panel | Command+Shift+A | Ctrl+Shift+A  |
+
+The save shortcut opens the capture popup for review before saving. The browser labels this native action “Activate the extension”; that label cannot be customized through the command description.
+
+These are suggested defaults. Existing assignments may remain unchanged, and conflicts with browser, operating-system, or other extension shortcuts can leave a command unassigned. Use **Manage shortcuts** in the library to view or reassign the actual bindings in your browser's extension-shortcut settings.
+
 ## Development
 
 ```bash
